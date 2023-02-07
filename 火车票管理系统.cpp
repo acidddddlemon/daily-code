@@ -14,6 +14,7 @@ typedef struct TicketNode
 	TicketNode* next; // 指向下一个订票人的信息
 } TicketNode;
 //TicketNode* ticket = NULL;
+//大致同于string类中的find方法
 int search(char a[], char b)
 {
     int i = 0;
@@ -27,7 +28,7 @@ int search(char a[], char b)
     }
     return -1;
 }
-char* substr(char a[], int pos, int n)
+char* substr(char a[], int pos, int n)//模仿string类中的substr方法的一个实现
 { 
     char* b = a + pos;
     b[n] = '\0';
@@ -44,7 +45,7 @@ void myprint(TicketNode* a)
         a = a->next;
     }
 }
-int convert(char num[])
+int convert(char num[])//实现数字从字符串变成真正的int数字
 {
     int a = 0;
     int len = strlen(num);
@@ -123,7 +124,7 @@ void insertbyP(TicketNode*& a, TicketNode*& b)
         return;
     }
 }
-void sortbyP(TicketNode*& a)
+void sortbyP(TicketNode*& a)//链表插入排序算法
 {
     if (a == NULL || a->next == NULL)
         return;
@@ -153,7 +154,7 @@ void sortbyT(TicketNode*& a)
         }
     }
 }
-void refund(TicketNode*& a,char *b)
+void refund(TicketNode*& a,char *b)//实现退票功能（本来退票应该直接删除那个节点的，本人 too lazy, so just add a parameter in struct.）
 {
     TicketNode* head = a;
     while (strcmp(head->name, b) != 0)
