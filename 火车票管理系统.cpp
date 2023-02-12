@@ -40,26 +40,26 @@
 #include <string.h>
 #include <iostream>
 #include <math.h>
-#include <string>
 using namespace std;
 #define min(x,y) ((x)>(y)?(y):(x))
-#define MAX 100
 typedef struct TicketNode
 {
-	char name[20];    // 订票人的名字，不超过20个字符，中间不带空格
-	int price;  // 订票的价格
+    char name[20];    // 订票人的名字，不超过20个字符，中间不带空格
+    int price;  // 订票的价格
     int time;
     int condition = 1;//默认售出不退
-	TicketNode* next; // 指向下一个订票人的信息
+    TicketNode* next; // 指向下一个订票人的信息
 } TicketNode;
 //TicketNode* ticket = NULL;
+
 //大致同于string类中的find方法
+//用于查找字符串中是否有要寻找的字符，有则返回下标数，无返回-1
 int search(char a[], char b)
 {
     int i = 0;
     while (a[i] != '\0')
     {
-        if (a[i] ==b)
+        if (a[i] == b)
         {
             return i;
         }
@@ -67,8 +67,8 @@ int search(char a[], char b)
     }
     return -1;
 }
-char* substr(char a[], int pos, int n)//模仿string类中的substr方法的一个实现
-{ 
+char* substr(char a[], int pos, int n)//实现字符串的分割（实现的并不好，因为也修改了原有字符串，只是侥幸这道题能过）.用于截取从pos位置起查n个字符的字符串（n=-1则从pos截到尾部）
+{
     char* b = a + pos;
     b[n] = '\0';
     return b;
@@ -94,7 +94,7 @@ int convert(char num[])//实现数字从字符串变成真正的int数字
     }
     return a;
 }
-TicketNode* save(TicketNode*& a,char name[],char price[],int time)
+TicketNode* save(TicketNode*& a, char name[], char price[], int time)
 {
     int price2 = convert(price);
     TicketNode* b = new TicketNode;
@@ -193,7 +193,7 @@ void sortbyT(TicketNode*& a)
         }
     }
 }
-void refund(TicketNode*& a,char *b)//实现退票功能（本来退票应该直接删除那个节点的，本人 too lazy, so just add a parameter in struct.）
+void refund(TicketNode*& a, char* b)//实现退票功能（正常退票应该直接删除那个节点的，本人 too lazy, so just add a parameter in struct.）
 {
     TicketNode* head = a;
     while (strcmp(head->name, b) != 0)
@@ -202,7 +202,7 @@ void refund(TicketNode*& a,char *b)//实现退票功能（本来退票应该直�
     }
     head->condition = 0;
 }
-char *b[40]={NULL};
+char* b[40] = { NULL };
 char a[100][100];
 int main()
 {
@@ -220,25 +220,23 @@ int main()
     {
         int pos = search(b[i], ' ');
         char* first = substr(b[i], 0, pos);
-        int len = strlen(b[i]);
-        b[i] = substr(b[i], pos + 1, len-pos-1);
+        b[i] = substr(b[i], pos + 1,  -1);
         pos = search(b[i], ' ');
         char* middle = substr(b[i], 0, pos);
-        len= strlen(b[i]);
-        b[i] = substr(b[i], pos + 1, len-pos-1);
+        b[i] = substr(b[i], pos + 1, -1);
         char* last = b[i];
         //cout << first << "\n" << middle << "\n" << last << endl;
-        if (strcmp(first,"SALE")==0)
+        if (strcmp(first, "SALE") == 0)
         {
-            ticket = save(ticket, middle, last,i);
+            ticket = save(ticket, middle, last, i);
         }
-        else if (strcmp(last, "TIME")==0)
+        else if (strcmp(last, "TIME") == 0)
         {
             sortbyT(ticket);
             myprint(ticket);
             cout << endl;
         }
-        else if (strcmp(last, "PRICE")==0)
+        else if (strcmp(last, "PRICE") == 0)
         {
             sortbyP(ticket);
             myprint(ticket);
@@ -249,5 +247,5 @@ int main()
             refund(ticket, middle);
         }
     }
-	return 0;
+    return 0;
 }
